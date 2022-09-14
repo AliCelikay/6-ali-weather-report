@@ -1,0 +1,10 @@
+#navBar-title{
+    /* left and right */
+    justify-content: center;
+    background-color: blue;
+
+}
+
+.navBar-text-color{
+    color: white;
+}
