@@ -1,10 +1,8 @@
-#navBar-title{
-    /* left and right */
-    justify-content: center;
-    background-color: blue;
-
+.web-title-background{
+    background-image: linear-gradient(to bottom right, blue, purple);
 }
 
-.navBar-text-color{
-    color: white;
+.btn{
+    background-image: linear-gradient(to bottom right, rgb(0, 126, 168), lightblue);
 }
+
