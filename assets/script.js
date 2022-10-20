@@ -186,9 +186,20 @@ var renderLocalStorage = function () {
     for (let i = 0; i < citiesFromLocalStorage.length; i++) {
         var eachSavedCityEl = $('<li>');
         eachSavedCityEl.text(citiesFromLocalStorage[i].city);
+        eachSavedCityEl.attr('data-city', citiesFromLocalStorage[i].city)
+        eachSavedCityEl.addClass('card card-body my-3 list-group-item-action')
         savedCitiesContainer.append(eachSavedCityEl);
     }
 } 
+
+// Event delegation on the li items,
+savedCitiesContainer.on('click', function(event) {
+    // Grabbing the city name from the custom class 'data-city
+    var cityName = event.target.getAttribute("data-city");
+
+    // Calling the city name in the function to get the city weather data
+    cityWeatherInfo(cityName);
+})
 
 // call this function so that previous searches come up right away
 renderLocalStorage();
