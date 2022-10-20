@@ -37,7 +37,6 @@ var cityWeatherInfo = function (searchedCity) {
             if (response.ok) {
                 response.json()
                     .then(function (cityWeatherData) {
-                        console.log(cityWeatherData);
                         displayCurrentCityWeather(cityWeatherData);
                     })
             }
@@ -49,8 +48,6 @@ var cityWeatherInfo = function (searchedCity) {
             if (response.ok) {
                 response.json()
                     .then(function (cityWeatherData) {
-                        console.log('City Weather Api');
-                        console.log(cityWeatherData);
                         displayCityForecast(cityWeatherData);
                     })
             }
@@ -165,7 +162,7 @@ var displayCityForecast = function (searchedCityData) {
 
 
             var cityHumidity = searchedCityData.list[i].main.humidity;
-            cityHumidityEl.text(`Humidity: ${cityHumidity}`);
+            cityHumidityEl.text(`Humidity: ${cityHumidity}%`);
             forecastDivEl.append(cityHumidityEl);
 
             eachForecastEl.append(forecastDivEl);
