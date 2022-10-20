@@ -3,7 +3,7 @@ var searchInput = $('#search-input');
 var submitBtn = $('#submit-btn');
 var weatherContainer = $('#weather-container');
 var forecastContainer = $('#forecast-container');
-var savedCities = $('#savedCities');
+var savedCitiesContainer = $('#savedCities');
 // my account apikey from website weather api
 var apikey = '80f8dcefe3ef6ce2455873840b1e67b5';
 
@@ -13,6 +13,20 @@ submitBtn.on("click", function (event) {
     // .val() grabs the value stored inside the textbox, then we assign the value to the var
     var cityInput = searchInput.val();
     cityWeatherInfo(cityInput);
+
+    var city = {
+        city: cityInput,
+    }
+
+    // Stringify and set key in localStorage to todos array
+    var savedCity = JSON.parse(localStorage.getItem("savedCity")) || [];
+
+    // Unshift so the latest search is at the first index and at the top of the search history container
+    savedCity.unshift(city);
+
+    localStorage.setItem("savedCity", JSON.stringify(savedCity));
+    
+    renderLocalStorage();
 })
 
 var cityWeatherInfo = function (searchedCity) {
@@ -25,7 +39,6 @@ var cityWeatherInfo = function (searchedCity) {
                     .then(function (cityWeatherData) {
                         console.log(cityWeatherData);
                         displayCurrentCityWeather(cityWeatherData);
-                        setLocalStorage(searchedCity);
                     })
             }
         })
@@ -39,7 +52,6 @@ var cityWeatherInfo = function (searchedCity) {
                         console.log('City Weather Api');
                         console.log(cityWeatherData);
                         displayCityForecast(cityWeatherData);
-                        setLocalStorage(searchedCity);
                     })
             }
         })
@@ -111,7 +123,6 @@ var displayCityForecast = function (searchedCityData) {
     ForecastTextEl.text(`5-Day Forecast:`);
     forecastContainer.append(ForecastTextEl);
 
-
     // The weather api for the forecast returns an array of 40 index's. The 0th index is the next day at midnight, and the 4th array is the 12pm mark of the same day. Then every 8th array is the following midnight after that. 
     for (var i = 0; i <= searchedCityData.list.length; i++) {
         if (i === 4 || i === 12 || i === 20 || i === 28 || i === 36) {
@@ -164,33 +175,20 @@ var displayCityForecast = function (searchedCityData) {
 }
 
 
-var setLocalStorage = function (searchedCity) {
-    // Stringify and set key in localStorage to todos array
-    localStorage.setItem("searchedCity", JSON.stringify(searchedCity)) || [];
-    renderLocalStorage();
-}
-
 // The following function renders items in a todo list as <li> elements
 var renderLocalStorage = function () {
-    // Clear todoList element and update todoCountSpan
-    savedCities.innerHTML = "";
+    // Clear savedCities container so that previous searches dont pile up together
+    savedCitiesContainer.html("");
 
     // Get stored todos from localStorage
-    var citiesFromLocalStorage = JSON.parse(localStorage.getItem("searchedCity")) || [];
+    var citiesFromLocalStorage = JSON.parse(localStorage.getItem("savedCity")); // || []
 
-    // todoCountSpan.textContent = todos.length;
-
-    // Render a new li for each todo
-    for (var i = 0; i < citiesFromLocalStorage.length; i++) {
-        var savedCityEl = $('<li>');
-        savedCityEl.text(citiesFromLocalStorage)
-        savedCityEl.attr("data-searchedCity", citiesFromLocalStorage);
-        savedCities.append(savedCityEl);
-
-        // var button = document.createElement("button");
-        // button.textContent = "Complete ✔️";
-
-        // li.appendChild(button);
-        // todoList.appendChild(li);
+    for (let i = 0; i < citiesFromLocalStorage.length; i++) {
+        var eachSavedCityEl = $('<li>');
+        eachSavedCityEl.text(citiesFromLocalStorage[i].city);
+        savedCitiesContainer.append(eachSavedCityEl);
     }
 } 
+
+// call this function so that previous searches come up right away
+renderLocalStorage();
