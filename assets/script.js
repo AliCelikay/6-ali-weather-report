@@ -115,25 +115,28 @@ var displayCurrentCityWeather = function (searchedCityData) {
 var displayCityForecast = function (searchedCityData) {
     // setting the weatherContainer to be empty so that everytime we research a city, the old city data will disappear
     forecastContainer.html("");
-    forecastContainer.addClass(`mt-2 d-flex flex-wrap`);
-    var ForecastTextEl = $('<h2>');
-    ForecastTextEl.text(`5-Day Forecast:`);
-    forecastContainer.append(ForecastTextEl);
+    // forecastContainer.addClass(``); Could not figure out how to display 5-day forecast as a block. Please Help!
+    var forecastTextDiv = $('<div>');
+    forecastTextDiv.addClass(`ml-3`)
+    var forecastTextEl = $('<h3>');
+    forecastTextEl.text(`5-Day Forecast:`);
+    forecastTextDiv.append(forecastTextEl)
+    forecastContainer.append(forecastTextDiv);
 
     // The weather api for the forecast returns an array of 40 index's. The 0th index is the next day at midnight, and the 4th array is the 12pm mark of the same day. Then every 8th array is the following midnight after that. 
     for (var i = 0; i <= searchedCityData.list.length; i++) {
         if (i === 4 || i === 12 || i === 20 || i === 28 || i === 36) {
             // Creating container for forecast to store and display grabbed data
             var forecastDivEl = $('<div>');
+            forecastDivEl.addClass(`columns`)
             // cannot store weather info under 1 div, need eachForecastEl to seperate each day's weather
-            var eachForecastEl = $('<div style="border: 3px solid black">');
+            var eachForecastEl = $('<div style="border: 3px solid bg-primary">');
+            eachForecastEl.addClass("card m-2 p-1 bg-primary text-white")
             var dateEl = $('<h3>');
             var cityTempEl = $('<h5>');
             var cityWindEl = $('<h5>');
             var cityHumidityEl = $('<h5>');
             var imgIconEl = $('<img>');
-
-            // eachForecastEl.addClass("class ="d-flex justify-content-between" ");
 
             // Grabbing date data and appending
             dateEl.text(moment(searchedCityData.list[i].dt_txt).format("M/DD/YYYY"));
@@ -184,7 +187,7 @@ var renderLocalStorage = function () {
         var eachSavedCityEl = $('<li>');
         eachSavedCityEl.text(citiesFromLocalStorage[i].city);
         eachSavedCityEl.attr('data-city', citiesFromLocalStorage[i].city)
-        eachSavedCityEl.addClass('card card-body my-3 list-group-item-action')
+        eachSavedCityEl.addClass('list-group-item list-group-item-dark h-25 my-3 list-group-item-action')
         savedCitiesContainer.append(eachSavedCityEl);
     }
 } 
